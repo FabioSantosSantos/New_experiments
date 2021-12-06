@@ -1,0 +1,15 @@
+curl -L -O https://raw.githubusercontent.com/named-data-ndnSIM/ndnSIM/master/examples/graphs/drop-graph.R
+curl -L -O https://raw.githubusercontent.com/named-data-ndnSIM/ndnSIM/master/examples/graphs/rate-graph.R
+docker run -d --name r1 r-base tail -f /dev/null
+docker cp rate-graph.R r1:/
+docker cp drop-graph.R r1:/
+docker cp rate-trace.txt r1:/
+docker exec -it r1 bash
+R
+install.packages("ggplot2")
+install.packages("doBy")
+CTRL+D (save workspace? yes)
+mkdir -p src/ndnSIM/docs/source/_static/
+Rscript rate-graph.R
+exit
+docker cp r1:/Rplots.pdf .
